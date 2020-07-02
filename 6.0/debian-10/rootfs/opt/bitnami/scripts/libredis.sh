@@ -217,7 +217,7 @@ export REDIS_TLS_KEY_FILE="${REDIS_TLS_KEY_FILE:-}"
 export REDIS_TLS_CA_FILE="${REDIS_TLS_CA_FILE:-}"
 export REDIS_TLS_DH_PARAMS_FILE="${REDIS_TLS_DH_PARAMS_FILE:-}"
 export REDIS_TLS_AUTH_CLIENTS="${REDIS_TLS_AUTH_CLIENTS:-yes}"
-export REDIS_ANNOUNCE_IP1="${REDIS_ANNOUNCE_IP:-$(get_machine_ip)}"
+export REDIS_ANNOUNCE_IP="${REDIS_ANNOUNCE_IP:-}"
 EOF
     if [[ -f "${REDIS_PASSWORD_FILE:-}" ]]; then
         cat <<"EOF"
@@ -316,8 +316,12 @@ redis_validate() {
 redis_configure_replication() {
     info "Configuring replication mode..."
 
-    redis_conf_set replica-announce-ip "$REDIS_ANNOUNCE_IP"
-    redis_conf_set replica-announce-port "$REDIS_MASTER_PORT_NUMBER"
+    if [[ "$REDIS_ANNOUNCE_IP" = "" ]]; then
+        redis_conf_set replica-announce-ip "$(get_machine_ip)"
+    else 
+        redis_conf_set replica-announce-ip "$REDIS_ANNOUNCE_IP"
+    fi
+    
     if [[ "$REDIS_REPLICATION_MODE" = "master" ]]; then
         if [[ -n "$REDIS_PASSWORD" ]]; then
             redis_conf_set masterauth "$REDIS_PASSWORD"

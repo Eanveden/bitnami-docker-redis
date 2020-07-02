@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 #
 # Bitnami Redis library
 
@@ -217,6 +217,7 @@ export REDIS_TLS_KEY_FILE="${REDIS_TLS_KEY_FILE:-}"
 export REDIS_TLS_CA_FILE="${REDIS_TLS_CA_FILE:-}"
 export REDIS_TLS_DH_PARAMS_FILE="${REDIS_TLS_DH_PARAMS_FILE:-}"
 export REDIS_TLS_AUTH_CLIENTS="${REDIS_TLS_AUTH_CLIENTS:-yes}"
+export REDIS_ANNOUNCE_IP = "${REDIS_ANNOUNCE_IP:-$(get_machine_ip)}"
 EOF
     if [[ -f "${REDIS_PASSWORD_FILE:-}" ]]; then
         cat <<"EOF"
@@ -315,7 +316,7 @@ redis_validate() {
 redis_configure_replication() {
     info "Configuring replication mode..."
 
-    redis_conf_set replica-announce-ip "$(get_machine_ip)"
+    redis_conf_set replica-announce-ip "$REDIS_ANNOUNCE_IP"
     redis_conf_set replica-announce-port "$REDIS_MASTER_PORT_NUMBER"
     if [[ "$REDIS_REPLICATION_MODE" = "master" ]]; then
         if [[ -n "$REDIS_PASSWORD" ]]; then

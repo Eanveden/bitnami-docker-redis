@@ -217,7 +217,7 @@ export REDIS_TLS_KEY_FILE="${REDIS_TLS_KEY_FILE:-}"
 export REDIS_TLS_CA_FILE="${REDIS_TLS_CA_FILE:-}"
 export REDIS_TLS_DH_PARAMS_FILE="${REDIS_TLS_DH_PARAMS_FILE:-}"
 export REDIS_TLS_AUTH_CLIENTS="${REDIS_TLS_AUTH_CLIENTS:-yes}"
-export REDIS_ANNOUNCE_IP = "${REDIS_ANNOUNCE_IP:-$(get_machine_ip)}"
+export REDIS_ANNOUNCE_IP1="${REDIS_ANNOUNCE_IP:-$(get_machine_ip)}"
 EOF
     if [[ -f "${REDIS_PASSWORD_FILE:-}" ]]; then
         cat <<"EOF"
